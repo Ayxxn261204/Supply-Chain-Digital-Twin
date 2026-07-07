@@ -1,0 +1,48 @@
+# Digital Twin Supply Chain - Python Dependencies
+
+# MQTT Client
+paho-mqtt==1.6.1
+
+# Road Network & Routing (NEW)
+osmnx>=1.9.0
+networkx>=3.2.0
+geopandas>=0.14.0
+shapely>=2.0.0
+
+# Scientific Computing
+numpy>=1.26.0
+scipy>=1.11.0
+scikit-learn>=1.3.0
+
+# Deep Learning (CPU-only, laptop-safe)
+# PyTorch: install CPU-only build to keep size small
+# pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch>=2.0.0
+
+# Time-Series Database Client
+influxdb-client==1.38.0
+
+# Dashboard (Future)
+streamlit==1.29.0
+pandas==2.1.4
+plotly==5.18.0
+
+# Configuration
+pyyaml==6.0.1
+python-dotenv==1.0.0
+
+# Testing
+pytest==7.4.3
+
+# ============================================================================
+# AI / ML / RL  (optional – simulation runs without these)
+# ============================================================================
+
+# Prediction Pod: Amazon Chronos-T5-Tiny (zero-shot demand forecasting)
+# Requires torch (above).  Install separately if needed:
+#   pip install chronos-forecasting
+# chronos-forecasting>=1.3.0   # uncomment to pin version
+
+# Optimization Pod: Stable-Baselines3 PPO (CPU-only RL)
+stable-baselines3>=2.3.0
+gymnasium>=0.29.0

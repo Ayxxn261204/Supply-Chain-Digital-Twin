@@ -1,0 +1,73 @@
+[INFO] Analysing:
+  Telemetry -> data\logs\telemetry\telemetry_sim-20260416-234817.csv
+  Events    -> data\logs\telemetry\events_sim-20260416-234817.csv
+
+[INFO] Simulation span : 180.0 simulated days
+[INFO] Telemetry rows  : 518,390
+[INFO] Event rows      : 1,437,274
+
+============================================================
+  COMPONENT HEALTH REPORT
+============================================================
+  Trucks tracked                : 10
+  Truck status snapshot counts  : {0.0: 516598, 2.0: 1350, 1.0: 254, 3.0: 188}
+  Fuel critical events (< 5 %)  : 0  [OK]
+  Avg cargo RSL day 0           : 100.0%
+  Avg cargo RSL final day       : 100.0%
+  Warehouses tracked            : []
+
+  EVENT BREAKDOWN:
+    inventory_shortage                       1430749
+    order_placed                              2014
+    road_accident                             1536
+    warehouse_restock                          940
+    warehouse_reorder_triggered                893
+    route_changed                              358
+    truck_arrival                              188
+    truck_departure                             94
+    order_assigned                              94
+    loading_complete                            94
+    delivery_complete                           94
+    unloading_complete                          94
+    unloading_started                           94
+    truck_low_fuel_warning                      32
+
+  PPO rerouting decisions       : 358
+  Warehouse reorders triggered  : 893
+  Warehouse restocks received   : 940
+  Road accidents simulated      : 1536
+  Low-fuel warnings (EdgeBrain) : 32
+
+  Accident severity breakdown   : Counter({'minor': 1110, 'moderate': 356, 'severe': 70})
+
+[CHART] chart_rsl_over_time.png  [OK]
+[CHART] chart_fuel_over_time.png  [OK]
+[CHART] chart_warehouse_activity.png  [OK]
+[CHART] chart_accidents_per_day.png  [OK]
+[CHART] chart_ppo_activity.png  [OK]
+[CHART] chart_accident_severity.png  [OK]
+
+============================================================
+  All charts saved to: data\analysis
+============================================================
+
+
+=== FINAL 6-MONTH OVERALL KPI METRICS ===
+
+1. Cargo Freshness (Remaining Shelf Life - RSL)
+- Overall Average RSL (In-Transit Cargo): 99.01%
+- Minimum RSL Hit During Transit: 91.40%
+- Maximum RSL Recorded: 99.90%
+
+2. Fleet Efficiency & Reliability
+- Overall Average Fleet Fuel Level: 95.68%
+- Cargo Deliveries Rejected due to Spoilage: 0
+
+3. Order Fulfillment Pipeline
+- Total Wholesale Orders Placed by Retailers: 2014
+- Total Orders Dispatched/Assigned: 94
+- Total Orders Successfully Fulfilled: 94
+
+4. Autonomous AI Evasion & Routing
+- Total Road Accidents Dodged by Edge AI: 1536
+- Dynamic PPO Rerouting Actions Taken: 358

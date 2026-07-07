@@ -1,0 +1,61 @@
+# Environment and secrets
+
+.env
+.env.*
+!.env.example
+!**/.env.example
+
+# Python
+
+**pycache**/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+
+# IDE and OS
+
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+
+*.log
+*.tmp
+*.temp
+
+# Frontend dependencies and builds
+
+node_modules/
+dashboard_v2/node_modules/
+dashboard_v2/dist/
+
+# Large generated caches
+
+data/cache/
+*.pkl
+
+# Exception: keep the small RL route pool if required
+
+!models/rl/route_pool_50.pkl
+
+# Large/generated ML models
+
+models/ml/*.pkl
+
+# Intermediate RL checkpoints
+
+models/rl/ppo_routing_*_steps.zip
+models/rl/ppo_routing_latest.zip
+
+# Downloaded research papers
+
+docs/Research papers/

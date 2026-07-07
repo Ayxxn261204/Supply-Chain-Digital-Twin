@@ -1,0 +1,21 @@
+# API Configuration
+# Server and endpoint settings
+
+cors:
+  allowed_origins:
+    - "http://localhost:5173"    # Dashboard dev server
+    - "http://localhost:3000"    # Alternative dev server
+  allow_credentials: true
+  allow_methods: ["GET", "POST", "PUT", "DELETE"]
+  allow_headers: ["*"]
+
+pagination:
+  default_limit: 50
+  max_limit: 1000
+
+query_defaults:
+  time_range_days: 7    # Default time range for queries
+  
+cache:
+  enabled: false
+  ttl_seconds: 60

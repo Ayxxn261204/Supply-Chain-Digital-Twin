@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  # Eclipse Mosquitto MQTT Broker
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: dt-mosquitto
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - mosquitto-data:/mosquitto/data
+      - mosquitto-log:/mosquitto/log
+    healthcheck:
+      test: [ "CMD", "mosquitto_sub", "-t", "$$SYS/#", "-C", "1", "-i", "healthcheck", "-W", "3" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - dt-network
+
+  # InfluxDB 2.x Time-Series Database
+  influxdb:
+    image: influxdb:2.7
+    container_name: dt-influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=${DOCKER_INFLUXDB_INIT_USERNAME}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${DOCKER_INFLUXDB_INIT_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${DOCKER_INFLUXDB_INIT_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${DOCKER_INFLUXDB_INIT_BUCKET}
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${DOCKER_INFLUXDB_INIT_ADMIN_TOKEN}
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+      - influxdb-config:/etc/influxdb2
+    healthcheck:
+      test: [ "CMD", "influx", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - dt-network
+
+  # Telegraf Data Pipeline
+  telegraf:
+    image: telegraf:1.28
+    container_name: dt-telegraf
+    depends_on:
+      mosquitto:
+        condition: service_healthy
+      influxdb:
+        condition: service_healthy
+    volumes:
+      - ./config/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    environment:
+      - INFLUX_URL=${INFLUX_URL}
+      - INFLUX_TOKEN=${INFLUX_TOKEN}
+      - INFLUX_ORG=${INFLUX_ORG}
+      - INFLUX_BUCKET=${INFLUX_BUCKET}
+    healthcheck:
+      test: [ "CMD", "telegraf", "--test", "--config", "/etc/telegraf/telegraf.conf" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+    networks:
+      - dt-network
+
+  # FastAPI Dashboard API
+  api:
+    build: ./api
+    container_name: dt-api
+    ports:
+      - "8000:8000"
+    environment:
+      - INFLUX_URL=http://influxdb:8086
+      - INFLUX_TOKEN=${INFLUX_TOKEN}
+      - INFLUX_ORG=${INFLUX_ORG}
+      - INFLUX_BUCKET=${INFLUX_BUCKET}
+      - MQTT_BROKER=mosquitto
+      - MQTT_PORT=1883
+    depends_on:
+      influxdb:
+        condition: service_healthy
+      mosquitto:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - dt-network
+
+networks:
+  dt-network:
+    driver: bridge
+
+volumes:
+  mosquitto-data:
+  mosquitto-log:
+  influxdb-data:
+  influxdb-config:

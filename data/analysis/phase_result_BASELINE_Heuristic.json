@@ -1,0 +1,12 @@
+{
+  "label": "BASELINE (Heuristic)",
+  "rl_enabled": false,
+  "service_level_pct": 96.09,
+  "total_kg_sold": 16783523.9,
+  "stockout_count": 9066,
+  "orders_fulfilled": 7219,
+  "kg_shipped": 16818013.7,
+  "inventory_shortages": 15070,
+  "avg_rsl_at_delivery": 99.63,
+  "deliveries_with_rsl_data": 7219
+}
